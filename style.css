@@ -192,3 +192,67 @@ body {
 }
 
 .hidden { display: none; }
+
+/* ===== PROMO WEBSITE CARD ===== */
+.promo-card {
+  margin-top: 2rem;
+  padding: 2rem 1.5rem;
+  border-radius: 20px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  animation: fadeIn 0.6s ease;
+}
+
+.promo-card h3 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 0.8rem;
+}
+
+.promo-card p {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
+  margin-bottom: 1.4rem;
+}
+
+.whatsapp-btn {
+  display: inline-block;
+  padding: 0.9rem 1.8rem;
+  background: linear-gradient(90deg, #25D366, #1EBE5A);
+  color: white;
+  font-weight: 600;
+  border-radius: 50px;
+  text-decoration: none;
+  font-size: 1rem;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3);
+  transition: all 0.25s ease;
+}
+
+.whatsapp-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(37, 211, 102, 0.5);
+}
+
+/* Mobile optimization */
+@media (max-width: 600px) {
+  .promo-card {
+    padding: 1.6rem 1.2rem;
+  }
+  .promo-card h3 {
+    font-size: 1.2rem;
+  }
+  .promo-card p {
+    font-size: 0.95rem;
+  }
+  .whatsapp-btn {
+    font-size: 0.95rem;
+    padding: 0.8rem 1.4rem;
+  }
+}
+
