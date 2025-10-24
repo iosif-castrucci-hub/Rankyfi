@@ -53,12 +53,13 @@ body {
 }
 
 .header-logo {
-  width: 320px;
-  height: 320px;
+  width: 320px !important;   /* forza la dimensione */
+  height: auto !important;   /* mantieni proporzioni naturali */
   object-fit: contain;
-  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.6));
+  filter: drop-shadow(0 0 18px rgba(255, 255, 255, 0.7));
   transition: transform 0.3s ease, filter 0.3s ease;
 }
+
 
 .header-logo:hover {
   transform: scale(1.05);
