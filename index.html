@@ -1,32 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Rankify</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="Check your Google visibility and see how your business ranks locally with Rankify." />
+  <title>Rankify — Local Google Ranking</title>
+  <link rel="stylesheet" href="style.css" />
   <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initApp" async defer></script>
 </head>
 <body>
-  <!-- HEADER -->
+  <!-- ===== HEADER ===== -->
   <header class="header glass">
-    <img src="logo_rankyfi.png" alt="Rankify Logo" class="header-logo">
-    <h1 class="header-title"></h1>
+    <img src="logo.png" alt="Rankify logo" class="header-logo" />
+    <h1 class="header-title">Rankify</h1>
   </header>
 
-  <!-- HERO SECTION -->
-  <section class="hero">
+  <!-- ===== HERO SECTION ===== -->
+  <section class="hero glass">
     <h2>Check your Google visibility</h2>
     <p>Find out where your business ranks locally — and see who’s ahead of you.</p>
-
     <div class="search-box glass">
-      <input id="place-input" type="text" placeholder="Search your business...">
+      <input id="place-input" type="text" placeholder="Search your business..." autocomplete="off" />
     </div>
   </section>
 
-  <!-- RESULTS -->
-  <section id="no-results" class="no-results hidden"></section>
-
+  <!-- ===== RESULTS ===== -->
   <section id="place-card" class="place-card glass hidden">
     <h3 id="place-name"></h3>
     <p id="place-address"></p>
@@ -34,9 +32,12 @@
     <div id="reviews-list"></div>
   </section>
 
-  <!-- FOOTER -->
+  <!-- ===== NO RESULTS ===== -->
+  <div id="no-results" class="no-results glass hidden"></div>
+
+  <!-- ===== FOOTER ===== -->
   <footer class="footer">
-    © 2025 Rankify — All rights reserved.
+    © 2025 Rankify. All rights reserved.
   </footer>
 
   <script src="script.js"></script>
