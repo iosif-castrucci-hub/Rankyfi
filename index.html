@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Rankify</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initApp" async defer></script>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="header glass">
+    <img src="logo.png" alt="Rankify Logo" class="header-logo">
+    <h1 class="header-title">Rankify</h1>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <h2>Check your Google visibility</h2>
+    <p>Find out where your business ranks locally — and see who’s ahead of you.</p>
+
+    <div class="search-box glass">
+      <input id="place-input" type="text" placeholder="Search your business...">
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section id="no-results" class="no-results hidden"></section>
+
+  <section id="place-card" class="place-card glass hidden">
+    <h3 id="place-name"></h3>
+    <p id="place-address"></p>
+    <div id="place-rating"></div>
+    <div id="reviews-list"></div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    © 2025 Rankify — All rights reserved.
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
