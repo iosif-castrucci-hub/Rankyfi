@@ -7,18 +7,22 @@
   <meta name="theme-color" content="#1e90ff" />
   <title>Rankify — Local Google Ranking</title>
   <link rel="stylesheet" href="style.css" />
+
   <!-- Google Maps -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initApp" async defer></script>
+  <script 
+    src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initApp" 
+    async defer>
+  </script>
 </head>
 
 <body>
-  <!-- HEADER -->
+  <!-- ===== HEADER ===== -->
   <header class="header glass">
     <img src="logo_rankyfi_def.png" alt="Rankify logo" class="header-logo" />
     <h1 class="header-title"></h1>
   </header>
 
-  <!-- HERO -->
+  <!-- ===== HERO ===== -->
   <section class="hero glass">
     <h2>Check your Google visibility</h2>
     <p>Find out where your business ranks locally — and see who’s ahead of you.</p>
@@ -27,7 +31,7 @@
     </div>
   </section>
 
-  <!-- RESULTS CARD (shown after search) -->
+  <!-- ===== RESULTS CARD (shown after search) ===== -->
   <section id="place-card" class="place-card glass hidden">
     <h3 id="place-name"></h3>
     <p id="place-address"></p>
@@ -35,10 +39,10 @@
     <div id="reviews-list"></div>
   </section>
 
-  <!-- NO RESULTS / MESSAGES -->
+  <!-- ===== NO RESULTS / MESSAGES ===== -->
   <div id="no-results" class="no-results glass hidden"></div>
 
-  <!-- PROMO WEBSITE CARD -->
+  <!-- ===== PROMO WEBSITE CARD ===== -->
   <section class="ranking-card glass promo-card">
     <h3>🚀 Create your website in 15 minutes</h3>
     <p class="muted">
@@ -49,9 +53,11 @@
     <a
       class="whatsapp-btn pulse-mobile"
       href="https://wa.me/393534907105?text=Hi%20👋%20I'm%20interested%20in%20creating%20a%20website%20in%2015%20minutes!"
-      target="_blank" rel="noopener"
+      target="_blank"
+      rel="noopener"
       aria-label="Contact me on WhatsApp">
-      <!-- WhatsApp SVG icon -->
+      
+      <!-- WhatsApp SVG Icon -->
       <svg class="wa-icon" viewBox="0 0 32 32" width="22" height="22" aria-hidden="true">
         <path fill="#25D366" d="M19.11 5.33a9.66 9.66 0 0 0-8.18 14.67l-.53 3.87 3.95-1.03a9.63 9.63 0 0 0 4.75 1.26h.01a9.66 9.66 0 1 0 0-19.77Zm0 17.26h-.01a7.57 7.57 0 0 1-3.86-1.06l-.28-.17-2.35.61.62-2.28-.18-.29a7.58 7.58 0 1 1 6.04 3.19Z"/>
         <path fill="#FFF" d="M22.38 18.02c-.13-.06-1.27-.62-1.47-.69-.2-.07-.35-.1-.5.1-.15.2-.58.69-.71.83-.13.14-.26.16-.49.06-.23-.1-.99-.37-1.89-1.18-.7-.62-1.18-1.38-1.32-1.61-.14-.23-.02-.35.08-.45.08-.08.2-.2.3-.31.1-.1.13-.17.2-.29.07-.12.04-.22-.02-.31-.06-.1-.5-1.2-.69-1.65-.18-.44-.37-.38-.5-.39l-.43-.01a.83.83 0 0 0-.6.28c-.2.2-.76.74-.76 1.8 0 1.05.78 2.06.9 2.2.12.14 1.53 2.33 3.7 3.27.52.22.92.35 1.24.44.52.16.99.14 1.36.08.41-.06 1.27-.52 1.45-1.02.18-.51.18-.95.12-1.04-.06-.1-.12-.14-.25-.2Z"/>
@@ -60,7 +66,7 @@
     </a>
   </section>
 
-  <!-- FOOTER -->
+  <!-- ===== FOOTER ===== -->
   <footer class="footer">© 2025 Rankify. All rights reserved.</footer>
 
   <script src="script.js"></script>
