@@ -369,7 +369,7 @@ body {
   }
 }
 
-/* ===== RANK NUMBER BADGE ===== */
+/* ===== RANK NUMBER BADGE (high contrast) ===== */
 .rank-number {
   position: relative;
   display: flex;
@@ -378,65 +378,55 @@ body {
   width: 120px;
   height: 120px;
   margin: 1.5rem auto;
-  font-size: 3.8rem;
+  font-size: 4rem;
   font-weight: 900;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  text-shadow:
+    0 0 15px rgba(0, 200, 255, 0.9),
+    0 0 30px rgba(0, 150, 255, 0.8),
+    0 0 45px rgba(0, 100, 255, 0.6);
+  background: radial-gradient(circle at top left,
+    rgba(255, 255, 255, 0.15),
+    rgba(0, 0, 0, 0.1));
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 2px solid rgba(255, 255, 255, 0.25);
+  border: 2px solid rgba(255, 255, 255, 0.3);
   box-shadow:
-    0 0 25px rgba(0, 255, 255, 0.4),
-    inset 0 0 15px rgba(255, 255, 255, 0.15);
-  text-shadow:
-    0 0 15px rgba(0, 255, 255, 0.8),
-    0 0 25px rgba(0, 140, 255, 0.6);
-  background-image: linear-gradient(135deg, rgba(0, 255, 255, 0.25), rgba(0, 140, 255, 0.15));
-  animation: glowPulse 3s infinite ease-in-out, gradientShift 6s linear infinite;
-  color: transparent;
-  background-clip: text;
-  -webkit-background-clip: text;
-  background-image: linear-gradient(90deg, #00ffff, #007bff, #00c3ff);
-  background-size: 200% 200%;
-  -webkit-text-fill-color: transparent;
+    0 0 25px rgba(0, 140, 255, 0.3),
+    inset 0 0 15px rgba(255, 255, 255, 0.1);
+  animation: rankPulse 3s infinite ease-in-out;
 }
 
-/* Outer glowing halo */
+/* Halo glow */
 .rank-number::before {
   content: "";
   position: absolute;
   inset: -10px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(0,255,255,0.4), transparent 70%);
-  filter: blur(20px);
+  background: radial-gradient(circle, rgba(0,200,255,0.4), transparent 70%);
+  filter: blur(25px);
   z-index: -1;
   animation: haloSpin 6s linear infinite;
 }
 
-/* Gradient animation */
-@keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* Soft pulse + glow */
-@keyframes glowPulse {
+/* Pulse animation */
+@keyframes rankPulse {
   0%, 100% {
     transform: scale(1);
     box-shadow:
-      0 0 25px rgba(0, 255, 255, 0.4),
+      0 0 25px rgba(0, 200, 255, 0.4),
       inset 0 0 15px rgba(255, 255, 255, 0.15);
   }
   50% {
     transform: scale(1.08);
     box-shadow:
-      0 0 45px rgba(0, 255, 255, 0.6),
+      0 0 45px rgba(0, 200, 255, 0.7),
       inset 0 0 25px rgba(255, 255, 255, 0.25);
   }
 }
 
-/* Halo rotation */
+/* Slow halo rotation */
 @keyframes haloSpin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
@@ -451,4 +441,3 @@ body {
     margin: 1rem auto;
   }
 }
-
