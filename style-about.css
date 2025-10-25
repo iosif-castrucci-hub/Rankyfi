@@ -32,10 +32,10 @@ body {
 
 /* ===== GLASS EFFECT ===== */
 .glass {
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.1); /* più trasparente */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border-radius: 18px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
 }
@@ -58,7 +58,6 @@ body {
   justify-content: center;
   align-items: center;
   padding: 1rem;
-  width: fit-content;
   border-radius: 20px;
 }
 
@@ -89,6 +88,14 @@ body {
   padding: 2.2rem 1.8rem;
   text-align: center;
   animation: fadeIn 0.6s ease;
+  max-width: 700px;
+  background: rgba(255, 255, 255, 0.08); /* maggiore trasparenza */
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 18px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  color: rgba(255, 255, 255, 0.95);
 }
 
 .card h2 {
