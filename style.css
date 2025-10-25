@@ -197,28 +197,41 @@ body {
   margin-bottom: 1rem;
 }
 
-/* ===== POSITION NUMBER ===== */
+/* ===== POSITION NUMBER (grande, centrato, effetto glow) ===== */
 .local-rank-number {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 3.5rem;
+  font-size: 4.5rem;                /* PIÙ GRANDE */
   font-weight: 800;
-  color: #fff;
-  text-shadow: 0 0 20px rgba(0, 255, 255, 0.7), 0 0 40px rgba(0, 150, 255, 0.5);
+  color: #ffffff;
+  text-shadow:
+    0 0 20px rgba(0, 255, 255, 0.9),
+    0 0 40px rgba(0, 150, 255, 0.6),
+    0 0 60px rgba(0, 100, 255, 0.4);
   background: radial-gradient(circle at center, rgba(0, 140, 255, 0.15), transparent 70%);
   border-radius: 50%;
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   margin: 1.2rem auto;
-  animation: pulseRank 2.5s infinite ease-in-out;
+  animation: pulseRank 2.2s infinite ease-in-out;
 }
 
 @keyframes pulseRank {
   0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.08); opacity: 0.9; }
+  50% { transform: scale(1.1); opacity: 0.85; }
   100% { transform: scale(1); opacity: 1; }
 }
+
+/* MOBILE - più compatto ma sempre visibile */
+@media (max-width: 600px) {
+  .local-rank-number {
+    font-size: 3.2rem;
+    width: 95px;
+    height: 95px;
+  }
+}
+
 
 /* ===== NO RESULTS ===== */
 .no-results {
