@@ -79,6 +79,9 @@ body {
   max-width: 700px;
   margin: 1.5rem auto;
   padding: 2.5rem 1.5rem;
+  overflow: visible;            /* evita tagli del dropdown */
+  position: relative;           /* contesto per z-index locali */
+  z-index: 1;
 }
 
 .hero h2 {
@@ -102,7 +105,9 @@ body {
   border-radius: 50px;
   width: 100%;
   padding: 0.6rem 1rem;
-  position: relative;
+  position: relative;           /* serve al dropdown */
+  overflow: visible !important; /* non tagliare il menu */
+  z-index: 20;                  /* sopra alle card sotto */
 }
 
 .search-box input {
@@ -121,6 +126,55 @@ body {
 }
 .search-box input:focus::placeholder {
   opacity: 0;
+}
+
+/* ===== AUTOCOMPLETE DROPDOWN (contrastato e in primo piano) ===== */
+.autocomplete-results {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: rgba(8, 14, 28, 0.95);             /* scuro, molto leggibile */
+  color: #fff;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  max-height: 320px;
+  overflow-y: auto;
+  z-index: 9999;                                  /* sempre sopra */
+  padding: 0.5rem 0;
+  animation: dropdownFade 0.25s ease;
+}
+
+.autocomplete-item {
+  padding: 1rem 1.2rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.autocomplete-item:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateX(4px);
+}
+
+.autocomplete-item.muted {
+  text-align: center;
+  opacity: 0.85;
+}
+
+/* Glow bordo quando il dropdown è visibile */
+.search-box:has(.autocomplete-results:not(.hidden)) {
+  box-shadow: 0 0 0 2px rgba(120, 170, 255, 0.35), 0 6px 24px rgba(0,0,0,0.25);
+}
+
+/* Fade animation */
+@keyframes dropdownFade {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* ===== RESULTS ===== */
@@ -170,29 +224,6 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ===== MOBILE HEADER FIX ===== */
-@media (max-width: 768px) {
-  .header {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  .header-logo {
-    width: 120px;
-  }
-  .header-title {
-    font-size: 1.8rem;
-  }
-  .hero {
-    padding: 2rem 1rem;
-  }
-  .hero h2 {
-    font-size: 1.6rem;
-  }
-  .search-box {
-    padding: 0.5rem 0.8rem;
-  }
-}
-
 .hidden { display: none; }
 
 /* ===== PROMO WEBSITE CARD (rebalanced) ===== */
@@ -227,7 +258,7 @@ body {
   margin-bottom: 1.2rem;
 }
 
-/* WhatsApp Button (smaller + same feel) */
+/* WhatsApp Button */
 .whatsapp-btn {
   display: inline-flex;
   align-items: center;
@@ -263,7 +294,30 @@ body {
 }
 .pulse-mobile { animation: pulse 2.8s infinite; }
 
-/* Mobile fix */
+/* ===== MOBILE HEADER FIX ===== */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .header-logo {
+    width: 120px;
+  }
+  .header-title {
+    font-size: 1.8rem;
+  }
+  .hero {
+    padding: 2rem 1rem;
+  }
+  .hero h2 {
+    font-size: 1.6rem;
+  }
+  .search-box {
+    padding: 0.5rem 0.8rem;
+  }
+}
+
+/* Mobile tweak for promo */
 @media (max-width: 600px) {
   .promo-card {
     padding: 1.4rem 1rem;
