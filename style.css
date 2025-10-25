@@ -79,9 +79,9 @@ body {
   max-width: 700px;
   margin: 1.5rem auto;
   padding: 2.5rem 1.5rem;
-  overflow: visible;            /* evita tagli del dropdown */
-  position: relative;           /* contesto per z-index locali */
+  position: relative;
   z-index: 1;
+  overflow: visible;
 }
 
 .hero h2 {
@@ -105,9 +105,9 @@ body {
   border-radius: 50px;
   width: 100%;
   padding: 0.6rem 1rem;
-  position: relative;           /* serve al dropdown */
-  overflow: visible !important; /* non tagliare il menu */
-  z-index: 20;                  /* sopra alle card sotto */
+  position: relative;
+  overflow: visible !important;
+  z-index: 20;
 }
 
 .search-box input {
@@ -128,13 +128,13 @@ body {
   opacity: 0;
 }
 
-/* ===== AUTOCOMPLETE DROPDOWN (contrastato e in primo piano) ===== */
+/* ===== AUTOCOMPLETE DROPDOWN ===== */
 .autocomplete-results {
   position: absolute;
   top: calc(100% + 8px);
   left: 0;
   right: 0;
-  background: rgba(8, 14, 28, 0.95);             /* scuro, molto leggibile */
+  background: rgba(8, 14, 28, 0.95);
   color: #fff;
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.15);
@@ -143,7 +143,7 @@ body {
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
   max-height: 320px;
   overflow-y: auto;
-  z-index: 9999;                                  /* sempre sopra */
+  z-index: 9999;
   padding: 0.5rem 0;
   animation: dropdownFade 0.25s ease;
 }
@@ -166,15 +166,13 @@ body {
   opacity: 0.85;
 }
 
-/* Glow bordo quando il dropdown è visibile */
 .search-box:has(.autocomplete-results:not(.hidden)) {
   box-shadow: 0 0 0 2px rgba(120, 170, 255, 0.35), 0 6px 24px rgba(0,0,0,0.25);
 }
 
-/* Fade animation */
 @keyframes dropdownFade {
   from { opacity: 0; transform: translateY(-6px); }
-  to   { opacity: 1; transform: translateY(0); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* ===== RESULTS ===== */
@@ -197,6 +195,29 @@ body {
   font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: 1rem;
+}
+
+/* ===== POSITION NUMBER ===== */
+.local-rank-number {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 0 20px rgba(0, 255, 255, 0.7), 0 0 40px rgba(0, 150, 255, 0.5);
+  background: radial-gradient(circle at center, rgba(0, 140, 255, 0.15), transparent 70%);
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  margin: 1.2rem auto;
+  animation: pulseRank 2.5s infinite ease-in-out;
+}
+
+@keyframes pulseRank {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.08); opacity: 0.9; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 /* ===== NO RESULTS ===== */
@@ -226,10 +247,10 @@ body {
 
 .hidden { display: none; }
 
-/* ===== PROMO WEBSITE CARD (rebalanced) ===== */
+/* ===== PROMO WEBSITE CARD ===== */
 .promo-card {
   margin-top: 1.5rem;
-  padding: 1.8rem 1.4rem;
+  padding: 1.8rem 1.4rem 2.2rem;
   border-radius: 18px;
   text-align: center;
   background: rgba(255, 255, 255, 0.12);
@@ -258,13 +279,13 @@ body {
   margin-bottom: 1.2rem;
 }
 
-/* WhatsApp Button */
+/* ===== WHATSAPP BUTTON ===== */
 .whatsapp-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.7rem 1.5rem;
+  padding: 0.8rem 1.7rem;
   background: linear-gradient(90deg, #25D366, #1EBE5A);
   color: white;
   font-weight: 600;
@@ -273,6 +294,7 @@ body {
   font-size: 0.95rem;
   box-shadow: 0 3px 10px rgba(37, 211, 102, 0.25);
   transition: all 0.25s ease;
+  margin-bottom: 1rem; /* più spazio sotto */
 }
 
 .whatsapp-btn:hover {
@@ -320,7 +342,7 @@ body {
 /* Mobile tweak for promo */
 @media (max-width: 600px) {
   .promo-card {
-    padding: 1.4rem 1rem;
+    padding: 1.4rem 1rem 2rem;
   }
   .promo-card h3 {
     font-size: 1.2rem;
