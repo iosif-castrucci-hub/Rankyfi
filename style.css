@@ -461,7 +461,7 @@ body {
   margin-bottom: 1.3rem;
 }
 
-.promo-card a.whatsapp-btn {
+/*.promo-card a.whatsapp-btn {
   background: linear-gradient(90deg, #0084ff, #00c6ff);
   box-shadow: 0 4px 12px rgba(0, 132, 255, 0.35);
 }
@@ -469,7 +469,7 @@ body {
 .promo-card a.whatsapp-btn:hover {
   box-shadow: 0 6px 18px rgba(0, 132, 255, 0.45);
   transform: translateY(-2px);
-}
+}*/
 /* ===== PAGE TRANSITION EFFECT ===== */
 .fade-in {
   opacity: 0;
