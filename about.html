@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us — Fluit</title>
+  <link rel="stylesheet" href="style-about.css" />
+</head>
+<body>
+  <main class="main-container">
+    <!-- LOGO -->
+    <div class="logo glass">
+      <img src="logo_rankyfi_def.png" alt="Fluit logo" class="logo-img float" />
+    </div>
+
+    <!-- ABOUT CARD -->
+    <section class="glass card">
+      <h2>About Us</h2>
+      <p>
+        Fluit is a dynamic young Italian startup dedicated to empowering businesses with innovative digital tools for seamless growth.
+        We simplify marketing challenges through fast solutions like Google Business ranking, AI automation consulting,
+        and 15-minute website creation via our mobile app.
+      </p>
+      <p>
+        Inspired by Italy’s creative tech spirit, our agile team delivers personalized 1-to-1 guidance
+        to build strong online presence and efficient workflows.
+        Join us to transform your ideas into results effortlessly.
+      </p>
+
+      <a href="index.html" class="btn-home">← Back to Home</a>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <p>© 2025 Fluit. All rights reserved.</p>
+    </footer>
+  </main>
+
+  <!-- PAGE TRANSITION SCRIPT -->
+  <script>
+    // Apply fade-in on load
+    document.body.classList.add('fade-in');
+
+    // Smooth fade-out before leaving page
+    document.querySelectorAll('a').forEach(link => {
+      const href = link.getAttribute('href');
+      if (href && !href.startsWith('#') && !href.startsWith('mailto:') && !href.startsWith('https://wa.me')) {
+        link.addEventListener('click', function (e) {
+          e.preventDefault();
+          document.body.classList.add('fade-out');
+          setTimeout(() => {
+            window.location.href = href;
+          }, 300); // duration of fadeOut
+        });
+      }
+    });
+  </script>
+</body>
+</html>
