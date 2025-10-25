@@ -292,27 +292,28 @@ body {
   margin-bottom: 1.2rem;
 }
 
-/* ===== WHATSAPP BUTTON ===== */
+/* ===== WHATSAPP BUTTON (GREEN VERSION) ===== */
 .whatsapp-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   padding: 0.8rem 1.7rem;
-  background: linear-gradient(90deg, #25D366, #1EBE5A);
-  color: white;
+  background: linear-gradient(90deg, #25D366, #1EBE5A); /* Verde WhatsApp */
+  color: #ffffff;
   font-weight: 600;
   border-radius: 50px;
   text-decoration: none;
   font-size: 0.95rem;
   box-shadow: 0 3px 10px rgba(37, 211, 102, 0.25);
   transition: all 0.25s ease;
-  margin-bottom: 1rem; /* più spazio sotto */
+  margin-bottom: 1rem;
 }
 
 .whatsapp-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(37, 211, 102, 0.45);
+  box-shadow: 0 6px 16px rgba(37, 211, 102, 0.45);
+  background: linear-gradient(90deg, #1EBE5A, #25D366);
 }
 
 .wa-icon {
@@ -321,13 +322,17 @@ body {
   filter: drop-shadow(0 0 3px rgba(255,255,255,0.3));
 }
 
-/* Pulse Effect */
+/* Pulse effect for attention */
 @keyframes pulse {
-  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.55); }
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.45); }
   70% { transform: scale(1.04); box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); }
   100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
 }
-.pulse-mobile { animation: pulse 2.8s infinite; }
+
+.pulse-mobile {
+  animation: pulse 2.8s infinite;
+}
+
 
 /* ===== MOBILE HEADER FIX ===== */
 @media (max-width: 768px) {
