@@ -26,28 +26,28 @@ function getSafe(obj, path, def = "") {
   }
 }
 
-// Haversine: distanza in metri
 function distanceMeters(fromLatLng, toLocation) {
   try {
     if (!fromLatLng || !toLocation) return 0;
     const R = 6371000;
     const lat1 = fromLatLng.lat();
     const lon1 = fromLatLng.lng();
-    const lat2 = (typeof toLocation.lat === "function") ? toLocation.lat() : toLocation.lat;
-    const lon2 = (typeof toLocation.lng === "function") ? toLocation.lng() : toLocation.lng;
-    const dLat = (lat2 - lat1) * Math.PI / 180;
-    const dLon = (lon2 - lon1) * Math.PI / 180;
-    const a = Math.sin(dLat/2)**2 +
-              Math.cos(lat1 * Math.PI/180) * Math.cos(lat2 * Math.PI/180) *
-              Math.sin(dLon/2)**2;
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    const lat2 = typeof toLocation.lat === "function" ? toLocation.lat() : toLocation.lat;
+    const lon2 = typeof toLocation.lng === "function" ? toLocation.lng() : toLocation.lng;
+    const dLat = ((lat2 - lat1) * Math.PI) / 180;
+    const dLon = ((lon2 - lon1) * Math.PI) / 180;
+    const a =
+      Math.sin(dLat / 2) ** 2 +
+      Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLon / 2) ** 2;
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c;
   } catch {
     return 0;
   }
 }
 
-// Punteggio composito: rating (forte), recensioni (attenuate), distanza (penalità)
 function scorePlace({ rating = 0, total = 0, distanceM = 0 }) {
   const distKm = distanceM / 1000;
   return rating * 20 + log1p(total) * 3 - distKm * 1.2;
@@ -83,7 +83,6 @@ window.initApp = function initApp() {
 
   attachInputEvents();
 
-  // NON mostrare alcuna card iniziale
   noResultsEl.classList.add("hidden");
   placeCardEl.classList.add("hidden");
 };
@@ -97,13 +96,12 @@ function attachInputEvents() {
     if (q.length < 3) {
       acContainer.innerHTML = "";
       acContainer.classList.add("hidden");
-      // nascondi messaggi e card quando l'input è breve
       noResultsEl.classList.add("hidden");
       placeCardEl.classList.add("hidden");
       return;
     }
     clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => showPredictions(q), 220);
+    debounceTimer = setTimeout(() => showPredictions(q), 200);
   });
 
   inputEl.addEventListener("focus", () => {
@@ -115,43 +113,30 @@ function attachInputEvents() {
       acContainer.classList.add("hidden");
     }
   });
-
-  // UX placeholder (opzionale)
-  const ph = inputEl.getAttribute("placeholder") || "";
-  inputEl.addEventListener("focus", () => inputEl.setAttribute("placeholder",""));
-  inputEl.addEventListener("blur", () => { if (!inputEl.value) inputEl.setAttribute("placeholder", ph); });
 }
 
 function showPredictions(query) {
   autocompleteService.getPlacePredictions(
     { input: query, language: "en", types: ["establishment"] },
     (preds, status) => {
-      if (status !== google.maps.places.PlacesServiceStatus.OK || !preds || !preds.length) {
-        acContainer.innerHTML = "<div class='autocomplete-item muted'>No results found</div>";
+      if (status !== google.maps.places.PlacesServiceStatus.OK || !preds?.length) {
+        acContainer.innerHTML =
+          "<div class='autocomplete-item muted'>No results found</div>";
         acContainer.classList.remove("hidden");
         return;
       }
       acContainer.innerHTML = "";
-      preds.slice(0, 6).forEach(p => {
+      preds.slice(0, 6).forEach((p) => {
         const el = document.createElement("div");
         el.className = "autocomplete-item";
         const main = escapeHtml(getSafe(p, "structured_formatting.main_text", ""));
-        const sec  = escapeHtml(getSafe(p, "structured_formatting.secondary_text", ""));
+        const sec = escapeHtml(getSafe(p, "structured_formatting.secondary_text", ""));
         el.innerHTML = `<strong>${main}</strong><div style="font-size:.9rem;color:rgba(255,255,255,.8)">${sec}</div>`;
-        
-        // 🔥 versione aggiornata
         el.addEventListener("click", () => {
-          // Mostra dettagli business
-          fetchPlaceDetails(p.place_id);
-
-          // Effetto “app-like”: chiude e pulisce la barra di ricerca dopo un breve delay
           acContainer.classList.add("hidden");
-          setTimeout(() => {
-            inputEl.value = "";      // svuota la barra
-            inputEl.blur();          // chiude tastiera su mobile
-          }, 300);
+          fetchPlaceDetails(p.place_id);
+          inputEl.value = ""; // pulisce la barra dopo la selezione
         });
-
         acContainer.appendChild(el);
       });
       acContainer.classList.remove("hidden");
@@ -159,23 +144,31 @@ function showPredictions(query) {
   );
 }
 
-
-// ===================== CATEGORY DETECTION =====================
-// (lasciato identico per non rompere nulla)
+// ===================== SMART CATEGORY DETECTION =====================
 const CATEGORY_MAP = [
-  { test: /pizz|pizzeria/i,           type: "restaurant", keyword: "pizzeria" },
-  { test: /trattor/i,                 type: "restaurant", keyword: "trattoria" },
-  { test: /ristorant/i,               type: "restaurant", keyword: "" },
-  { test: /osteria/i,                 type: "restaurant", keyword: "osteria" },
-  { test: /sushi|giappo/i,            type: "restaurant", keyword: "sushi" },
-  { test: /kebab/i,                   type: "restaurant", keyword: "kebab" },
-  { test: /gelat|ice\s?cream/i,       type: "cafe",       keyword: "gelateria" },
-  { test: /bar|pub/i,                 type: "bar",        keyword: "" },
-  { test: /caff[eè]/i,                type: "cafe",       keyword: "" },
-  { test: /panetter|forn|bakery/i,    type: "bakery",     keyword: "" },
-  { test: /hotel|alberg|b&b|bnb/i,    type: "lodging",    keyword: "" },
-  { test: /pasticc|pastry/i,          type: "bakery",     keyword: "pasticceria" },
-  { test: /food|cucina|mangiare/i,    type: "restaurant", keyword: "" },
+  { test: /farmac|pharmacy|drugstore/i,    type: "pharmacy",        keyword: "farmacia" },
+  { test: /medic|ospedale|hospital/i,      type: "hospital",        keyword: "ospedale" },
+  { test: /dentist|dentista/i,             type: "dentist",         keyword: "dentista" },
+  { test: /pizz|pizzeria/i,                type: "restaurant",      keyword: "pizzeria" },
+  { test: /trattor/i,                      type: "restaurant",      keyword: "trattoria" },
+  { test: /ristorant/i,                    type: "restaurant",      keyword: "" },
+  { test: /osteria/i,                      type: "restaurant",      keyword: "osteria" },
+  { test: /sushi|giappo/i,                 type: "restaurant",      keyword: "sushi" },
+  { test: /kebab/i,                        type: "restaurant",      keyword: "kebab" },
+  { test: /gelat|ice\s?cream/i,            type: "cafe",            keyword: "gelateria" },
+  { test: /bar|pub/i,                      type: "bar",             keyword: "" },
+  { test: /caff[eè]/i,                     type: "cafe",            keyword: "" },
+  { test: /panetter|forn|bakery/i,         type: "bakery",          keyword: "" },
+  { test: /hotel|alberg|b&b|bnb/i,         type: "lodging",         keyword: "" },
+  { test: /pasticc|pastry/i,               type: "bakery",          keyword: "pasticceria" },
+  { test: /parrucchi|barber|hair/i,        type: "hair_care",       keyword: "parrucchiere" },
+  { test: /supermerc|grocery|market/i,     type: "supermarket",     keyword: "supermercato" },
+  { test: /negozio|shop|store/i,           type: "store",           keyword: "negozio" },
+  { test: /palestr|gym|fitness/i,          type: "gym",             keyword: "palestra" },
+  { test: /bancomat|atm|banca|bank/i,      type: "bank",            keyword: "banca" },
+  { test: /carroz|auto|garage|mechanic/i,  type: "car_repair",      keyword: "autofficina" },
+  { test: /veterin|vet/i,                  type: "veterinary_care", keyword: "veterinario" },
+  { test: /scuol|school|universit/i,       type: "school",          keyword: "scuola" },
 ];
 
 function detectCategory(queryText, placeTypes = []) {
@@ -183,20 +176,28 @@ function detectCategory(queryText, placeTypes = []) {
   for (const row of CATEGORY_MAP) {
     if (row.test.test(q)) return { type: row.type, keyword: row.keyword };
   }
-  const t = (placeTypes || []).map(t => t.toLowerCase());
-  if (t.includes("lodging"))     return { type: "lodging",    keyword: "" };
-  if (t.includes("bar"))         return { type: "bar",        keyword: "" };
-  if (t.includes("cafe"))        return { type: "cafe",       keyword: "" };
-  if (t.includes("bakery"))      return { type: "bakery",     keyword: "" };
-  if (t.includes("restaurant"))  return { type: "restaurant", keyword: "" };
-  return { type: "restaurant", keyword: "" };
+
+  const t = (placeTypes || []).map((t) => t.toLowerCase());
+  const priorities = [
+    "pharmacy", "hospital", "dentist", "restaurant", "bar",
+    "cafe", "bakery", "lodging", "supermarket", "gym",
+    "hair_care", "bank", "car_repair", "veterinary_care", "school", "store"
+  ];
+  for (const type of priorities) {
+    if (t.includes(type)) return { type, keyword: "" };
+  }
+
+  return { type: "store", keyword: "" };
 }
 
 // ===================== PLACE DETAILS + RANKING =====================
 function fetchPlaceDetails(placeId) {
   showMessage("Loading details...");
   placesService.getDetails(
-    { placeId, fields: ["name","formatted_address","geometry","rating","user_ratings_total","types","place_id"] },
+    {
+      placeId,
+      fields: ["name", "formatted_address", "geometry", "rating", "user_ratings_total", "types", "place_id"],
+    },
     (details, status) => {
       if (status !== google.maps.places.PlacesServiceStatus.OK || !details) {
         showMessage("Could not load business details.");
@@ -208,19 +209,17 @@ function fetchPlaceDetails(placeId) {
 }
 
 function showPlaceAndRank(details) {
-  // header card
   noResultsEl.classList.add("hidden");
   placeCardEl.classList.remove("hidden");
-  placeNameEl.textContent = getSafe(details,"name","Business");
-  placeAddrEl.textContent = getSafe(details,"formatted_address","");
-  const r = getSafe(details,"rating",null);
-  const n = getSafe(details,"user_ratings_total",null);
-  placeRatingEl.innerHTML = r ? `⭐ <strong>${escapeHtml(String(r))}</strong> ${n ? `· (${n} reviews)` : ""}` : "";
+  placeNameEl.textContent = getSafe(details, "name", "Business");
+  placeAddrEl.textContent = getSafe(details, "formatted_address", "");
+  const r = getSafe(details, "rating", null);
+  const n = getSafe(details, "user_ratings_total", null);
+  placeRatingEl.innerHTML = r
+    ? `⭐ <strong>${escapeHtml(String(r))}</strong> ${n ? `· (${n} reviews)` : ""}`
+    : "";
 
-  // categoria per i vicini
-  const { type, keyword } = detectCategory(inputEl.value, getSafe(details,"types",[]));
-
-  // posizione / lista vicini
+  const { type, keyword } = detectCategory(placeNameEl.textContent, getSafe(details, "types", []));
   buildRealRanking(details, { type, keyword });
 }
 
@@ -235,23 +234,23 @@ function buildRealRanking(targetDetails, cat) {
 
   const nearbyReq = {
     location: center,
-    radius: 2500,       // mantengo 2.5 km perché questa versione ti funzionava
+    radius: 2500,
     type: cat.type,
-    language: "en"
+    language: "en",
   };
   if (cat.keyword) nearbyReq.keyword = cat.keyword;
 
   const textReq = {
     location: center,
-    radius: 2500,
+    radius: 5000,
     query: cat.keyword ? `${cat.keyword} ${cat.type}` : cat.type,
-    language: "en"
+    language: "en",
   };
 
   renderRankingCard("…");
 
   placesService.nearbySearch(nearbyReq, (res, st) => {
-    if (st !== google.maps.places.PlacesServiceStatus.OK || !res || !res.length) {
+    if (st !== google.maps.places.PlacesServiceStatus.OK || !res?.length) {
       placesService.textSearch(textReq, (res2) => {
         finalizeRanking(targetDetails, center, res2 || []);
       });
@@ -262,32 +261,32 @@ function buildRealRanking(targetDetails, cat) {
 }
 
 function finalizeRanking(targetDetails, center, rawList) {
-  const mapped = (rawList || []).map(p => ({
-    place_id: getSafe(p,"place_id",""),
-    name: getSafe(p,"name",""),
-    rating: getSafe(p,"rating",0),
-    total: getSafe(p,"user_ratings_total",0),
-    distanceM: distanceMeters(center, getSafe(p,"geometry.location",null))
+  const mapped = (rawList || []).map((p) => ({
+    place_id: getSafe(p, "place_id", ""),
+    name: getSafe(p, "name", ""),
+    rating: getSafe(p, "rating", 0),
+    total: getSafe(p, "user_ratings_total", 0),
+    distanceM: distanceMeters(center, getSafe(p, "geometry.location", null)),
   }));
 
   const target = {
-    place_id: getSafe(targetDetails,"place_id",""),
-    name: getSafe(targetDetails,"name",""),
-    rating: getSafe(targetDetails,"rating",0),
-    total: getSafe(targetDetails,"user_ratings_total",0),
-    distanceM: 0
+    place_id: getSafe(targetDetails, "place_id", ""),
+    name: getSafe(targetDetails, "name", ""),
+    rating: getSafe(targetDetails, "rating", 0),
+    total: getSafe(targetDetails, "user_ratings_total", 0),
+    distanceM: 0,
   };
-  if (!mapped.some(m => m.place_id === target.place_id)) mapped.push(target);
+  if (!mapped.some((m) => m.place_id === target.place_id)) mapped.push(target);
 
-  const withScore = mapped.map(m => ({ ...m, score: scorePlace(m) }));
-  withScore.sort((a,b) => b.score - a.score);
+  const withScore = mapped.map((m) => ({ ...m, score: scorePlace(m) }));
+  withScore.sort((a, b) => b.score - a.score);
 
-  const idx = withScore.findIndex(x => x.place_id === target.place_id);
+  const idx = withScore.findIndex((x) => x.place_id === target.place_id);
   const position = idx >= 0 ? idx + 1 : "—";
 
   renderRankingCard(position);
   const ahead = typeof position === "number" ? withScore.slice(0, Math.max(0, position - 1)) : [];
-  renderNearbyPlaces(ahead.slice(0,7), position);
+  renderNearbyPlaces(ahead.slice(0, 7), position);
 }
 
 // ===================== RENDERING =====================
@@ -306,19 +305,6 @@ function renderRankingCard(position) {
           target="_blank"
           id="whatsappButton"
           class="whatsapp-btn pulse-mobile"
-          style="
-            background: linear-gradient(90deg, #25D366 0%, #1EBE5A 100%);
-            color: white;
-            font-weight: 600;
-            padding: 0.9rem 1.8rem;
-            border-radius: 50px;
-            font-size: 1rem;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.25);
-            text-decoration: none;
-            transition: all 0.25s ease;
-          "
-          onmouseover="this.style.transform='scale(1.05)'"
-          onmouseout="this.style.transform='scale(1)'"
         >
           💬 Improve my Google position
         </a>
@@ -332,18 +318,18 @@ function renderRankingCard(position) {
   }
 }
 
-function renderNearbyPlaces(list, position) {
+function renderNearbyPlaces(list) {
   const box = document.getElementById("nearby-list");
   if (!box) return;
 
   if (!list || list.length === 0) {
-    box.innerHTML = `<p class="muted">We didn't find businesses outranking you nearby.</p>`;
+    box.innerHTML = `<p class="muted">No competitors found nearby.</p>`;
     return;
   }
 
   let html = `<h4>🏆 Top competitors near you</h4>`;
   html += `<div style="display:flex;flex-direction:column;gap:.7rem;margin-top:.6rem;">`;
-  list.forEach(item => {
+  list.forEach((item) => {
     html += `
       <div class="service-card glass" style="padding:1rem;border-radius:12px;">
         <div style="font-weight:700;font-size:1.05rem;color:#fff">${escapeHtml(item.name)}</div>
