@@ -135,20 +135,30 @@ function showPredictions(query) {
       preds.slice(0, 6).forEach(p => {
         const el = document.createElement("div");
         el.className = "autocomplete-item";
-        const main = escapeHtml(getSafe(p, "structured_formatting.main_text",""));
-        const sec  = escapeHtml(getSafe(p, "structured_formatting.secondary_text",""));
+        const main = escapeHtml(getSafe(p, "structured_formatting.main_text", ""));
+        const sec  = escapeHtml(getSafe(p, "structured_formatting.secondary_text", ""));
         el.innerHTML = `<strong>${main}</strong><div style="font-size:.9rem;color:rgba(255,255,255,.8)">${sec}</div>`;
+        
+        // 🔥 versione aggiornata
         el.addEventListener("click", () => {
-          inputEl.value = p.description; // se preferisci pulire, metti "" al posto di p.description
-          acContainer.classList.add("hidden");
+          // Mostra dettagli business
           fetchPlaceDetails(p.place_id);
+
+          // Effetto “app-like”: chiude e pulisce la barra di ricerca dopo un breve delay
+          acContainer.classList.add("hidden");
+          setTimeout(() => {
+            inputEl.value = "";      // svuota la barra
+            inputEl.blur();          // chiude tastiera su mobile
+          }, 300);
         });
+
         acContainer.appendChild(el);
       });
       acContainer.classList.remove("hidden");
     }
   );
 }
+
 
 // ===================== CATEGORY DETECTION =====================
 // (lasciato identico per non rompere nulla)
