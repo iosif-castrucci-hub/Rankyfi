@@ -441,3 +441,27 @@ body {
     margin: 1rem auto;
   }
 }
+/* ===== AUTOMATION & CONSULTING CARD ===== */
+.promo-card h3 {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 0.7rem;
+}
+
+.promo-card p {
+  font-size: 0.96rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.55;
+  margin-bottom: 1.3rem;
+}
+
+.promo-card a.whatsapp-btn {
+  background: linear-gradient(90deg, #0084ff, #00c6ff);
+  box-shadow: 0 4px 12px rgba(0, 132, 255, 0.35);
+}
+
+.promo-card a.whatsapp-btn:hover {
+  box-shadow: 0 6px 18px rgba(0, 132, 255, 0.45);
+  transform: translateY(-2px);
+}
